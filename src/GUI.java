@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.Socket;
 import java.util.Random;
 
 public class GUI extends JFrame implements ActionListener {
@@ -12,7 +11,7 @@ public class GUI extends JFrame implements ActionListener {
     private JButton[] game_buttons = new JButton[16];
     private JButton ready_button = new JButton("READY!");
 
-    private JTextArea score_pane = new JTextArea("Score: ");
+    private JTextArea time_area = new JTextArea("Time: ");
 
     private JPanel button_panel = new JPanel();
     private JPanel south_panel = new JPanel();
@@ -33,8 +32,8 @@ public class GUI extends JFrame implements ActionListener {
         button_panel.setLayout(new GridLayout(4, 4));
         south_panel.setLayout(new FlowLayout());
         south_panel.add(ready_button);
-        south_panel.add(score_pane);
-        score_pane.setEditable(false);
+        south_panel.add(time_area);
+        time_area.setEditable(false);
 
         ready_button.addActionListener(this);
 
