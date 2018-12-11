@@ -18,11 +18,13 @@ public class GameServer {
     private ActionListener broadcastListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("ready")) {
+            if (e.getActionCommand().equals("READY!")) {
                 ++readyCnt;
+                System.out.println("con");
 
                 if (readyCnt >= clients.size()) {
-                    // sende start an alle
+                    //StartTimer();
+                    System.out.println("Start");
 
                 }
             } else if (e.getActionCommand().equals("done")) {
@@ -45,9 +47,10 @@ public class GameServer {
                     while (running) {
                         Socket client = server.accept();
                         GameConnection player = new GameConnection(client);
-                        player.addActionListener(broadcastListener);
 
+                        player.addActionListener(broadcastListener);
                         clients.add(player);
+                        player.start();
                     }
                 } catch (Exception e) {
 

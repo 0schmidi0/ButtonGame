@@ -12,6 +12,7 @@ public class GUI extends JFrame implements ActionListener {
     private JButton ready_button = new JButton("READY!");
 
     private JTextArea time_area = new JTextArea("Time: ");
+    private JTextArea win_area = new JTextArea("?");
 
     private JPanel button_panel = new JPanel();
     private JPanel south_panel = new JPanel();
@@ -37,27 +38,30 @@ public class GUI extends JFrame implements ActionListener {
 
         button_panel.setLayout(new GridLayout(4, 4));
         south_panel.setLayout(new FlowLayout());
+        south_panel.add(win_area);
         south_panel.add(ready_button);
         south_panel.add(time_area);
         time_area.setEditable(false);
+        win_area.setEnabled(false);
 
         ready_button.addActionListener(this);
 
         GameServer server = new GameServer(5555);
         server.start();
-
+        GameClient c = new GameClient("localhost", 5555);
         // c.addActionListener(new ActionListener() {
         //   @Override
         // public void actionPerformed(ActionEvent e) {
         //   if (e.getActionCommand().equals("you win")) {
         // im Textfeld "Gewinner" anzeigen
+        //win_area.setText("U WON");
         // }
         //}
         //});
 
         ButtonInit();
         ButtonDisable();
-        StartTimer();
+       // StartTimer();
     }
 
     private void ButtonInit() {
@@ -70,7 +74,7 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
-    private void StartTimer() {
+    public void StartTimer() {
         new Thread() {
             @Override
             public void run() {
@@ -116,21 +120,18 @@ public class GUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("READY!")) {
-            GameClient c = new GameClient("localhost", 5555);
+
         } else {
             int buttonNR = Integer.parseInt(e.getActionCommand());
             game_buttons[buttonNR - 1].setEnabled(false);
             game_buttons[buttonNR - 1].setBackground(getBackground());
             this.random_button_count--;
             if ((this.random_button_count) == 0) {
-                //Von hier:
                 time_end = System.currentTimeMillis();
                 time_diff = time_end-time_start;
-                System.out.println("Zeit bis alle buttons gedrückt wurden:"+time_diff);  // nur für teszwecke ausgegeben
+                //System.out.println("Zeit bis alle buttons gedrückt wurden:"+time_diff);  // nur für teszwecke ausgegeben
                 time = String.valueOf(time_diff);
                 time_area.setText(time);
-                //GUI_time.add(Time,);
-                //bis hier von Lanzinger hinzugefügt am 06.12.2018
                 StartTimer();
             }
         }
