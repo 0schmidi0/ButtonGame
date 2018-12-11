@@ -22,7 +22,7 @@ public class GUI extends JFrame implements ActionListener {
     private long time_start;
     private long time_end;
     private long time_diff;
-    private String  Time;
+    private String  time;
     private JLabel GUI_time;
 
     public GUI(String title) {
@@ -127,7 +127,8 @@ public class GUI extends JFrame implements ActionListener {
                 time_end = System.currentTimeMillis();
                 time_diff = time_end-time_start;
                 System.out.println("Zeit bis alle buttons gedrückt wurden:"+time_diff);  // nur für teszwecke ausgegeben
-                Time = String.valueOf(time_diff);
+                time = String.valueOf(time_diff);
+                time_area.setText(time);
                 //GUI_time.add(Time,);
                 //bis hier von Lanzinger hinzugefügt am 06.12.2018
                 StartTimer();
