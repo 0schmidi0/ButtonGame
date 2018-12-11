@@ -19,6 +19,12 @@ public class GUI extends JFrame implements ActionListener {
     private Random rn = new Random();
     private int random_button_count;
 
+    private long time_start;
+    private long time_end;
+    private long time_diff;
+    private String  Time;
+    private JLabel GUI_time;
+
     public GUI(String title) {
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,12 +75,14 @@ public class GUI extends JFrame implements ActionListener {
             @Override
             public void run() {
                 int random_time = rn.nextInt(TIMER_OFFSET);
+
                 try {
                     Thread.sleep(random_time + TIMER_OFFSET);
                     RandomButtonEnable();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                time_start = System.currentTimeMillis();
             }
         }.start();
 
@@ -115,6 +123,13 @@ public class GUI extends JFrame implements ActionListener {
             game_buttons[buttonNR - 1].setBackground(getBackground());
             this.random_button_count--;
             if ((this.random_button_count) == 0) {
+                //Von hier:
+                time_end = System.currentTimeMillis();
+                time_diff = time_end-time_start;
+                System.out.println("Zeit bis alle buttons gedrückt wurden:"+time_diff);  // nur für teszwecke ausgegeben
+                Time = String.valueOf(time_diff);
+                //GUI_time.add(Time,);
+                //bis hier von Lanzinger hinzugefügt am 06.12.2018
                 StartTimer();
             }
         }
