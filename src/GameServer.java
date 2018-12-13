@@ -3,10 +3,13 @@ import java.awt.event.ActionListener;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameServer {
     private int port;
     private boolean running = false;
+    private static int TIMER_OFFSET = 3000;
+    private Random rn = new Random();
 
     private int readyCnt = 0;
     private ArrayList <GameConnection> clients = new ArrayList<>();
@@ -20,12 +23,12 @@ public class GameServer {
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("READY!")) {
                 ++readyCnt;
+                System.out.println("con");
 
                 if (readyCnt >= clients.size()) {
-                    // StartTimer();
-                    // warte eine zufällige zeit
-                    // erzeuge zufällige werte
-                    broadcastMessage("ENABLEBUTTONS;1;5;8;16");
+                    StartTimer();
+                    System.out.println("Start");
+
                 }
             } else if (e.getActionCommand().equals("done")) {
                 // e.getSource() --> sender vom done
@@ -36,13 +39,29 @@ public class GameServer {
         }
     };
 
-    private void broadcastMessage(String msg) {
-        for(GameConnection c : clients) {
-            c.send(msg);
-        }
-    }
 
-    public void start() {
+
+
+
+    private void StartTimer() {
+        new Thread() {
+            @Override
+            public void run() {
+                int random_time = rn.nextInt(TIMER_OFFSET);
+
+                try {
+                    Thread.sleep(random_time + TIMER_OFFSET);
+                    //RandomButtonEnable();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //time_start = System.currentTimeMillis();
+                System.out.println("Time: "+random_time);
+            }
+        }.start();
+
+    }
+        public void start() {
         this.running = true;
 
         Thread serverThread = new Thread() {
@@ -68,5 +87,9 @@ public class GameServer {
 
     public void stop() {
         this.running = false;
+    }
+
+    public static void main(String[] args) {
+        new GameServer(5555).start();
     }
 }

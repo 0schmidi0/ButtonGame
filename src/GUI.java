@@ -26,26 +26,8 @@ public class GUI extends JFrame implements ActionListener {
     private String  time;
     private JLabel GUI_time;
 
-    private ActionListener receiver = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            if (actionEvent.getActionCommand().startsWith("ENABLEBUTTONS")) {
-
-            }
-        }
-    };
-
-    private GameClient client;
-
     public GUI(String title) {
         super(title);
-
-        // erzeuge neuen gameclient für kommunikaiton mit server
-        client = new GameClient("localhost", 4321);
-        client.addActionListener(receiver);
-
-
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.getContentPane().setLayout(new BorderLayout());
@@ -64,8 +46,6 @@ public class GUI extends JFrame implements ActionListener {
 
         ready_button.addActionListener(this);
 
-        GameServer server = new GameServer(5555);
-        server.start();
         GameClient c = new GameClient("localhost", 5555);
         // c.addActionListener(new ActionListener() {
         //   @Override
@@ -79,7 +59,7 @@ public class GUI extends JFrame implements ActionListener {
 
         ButtonInit();
         ButtonDisable();
-       // StartTimer();
+        TimerRun();
     }
 
     private void ButtonInit() {
@@ -88,11 +68,11 @@ public class GUI extends JFrame implements ActionListener {
             game_buttons[i].addActionListener(this);
             button_panel.add(game_buttons[i]);
             this.pack();
-            this.setSize(850, 850);
+            this.setSize(340, 350);
         }
     }
 
-    public void StartTimer() {
+    public void TimerRun() {
         new Thread() {
             @Override
             public void run() {
@@ -137,9 +117,6 @@ public class GUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        client.sendMessage("READY!");
-
-
         if (e.getActionCommand().equals("READY!")) {
 
         } else {
@@ -153,7 +130,7 @@ public class GUI extends JFrame implements ActionListener {
                 //System.out.println("Zeit bis alle buttons gedrückt wurden:"+time_diff);  // nur für teszwecke ausgegeben
                 time = String.valueOf(time_diff);
                 time_area.setText(time);
-                StartTimer();
+                TimerRun();
             }
         }
     }
