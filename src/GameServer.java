@@ -17,7 +17,7 @@ public class GameServer {
     private int random_button_anzahl;
     private JButton[] game_buttons = new JButton[16];
     private int random_16;
-
+    private int[] activate_buttons;
     private ArrayList <GameConnection> clients = new ArrayList<>();
 
     public GameServer(int port) {
@@ -36,7 +36,15 @@ public class GameServer {
                     PlayButtons();
                     // warte eine zufällige zeit
                     // erzeuge zufällige werte
-                    broadcastMessage("ENABLEBUTTONS;1;5;8;16");
+                    String asdf = "";
+                    random_button_anzahl = (new Random().nextInt(3) + 1);
+                    for(int i=1;i<=random_button_anzahl;i++){
+                        random_16 = new Random().nextInt(15) + 1;
+                        activate_buttons[i]=random_16;
+
+                        asdf = asdf + Integer.toString(random_16) + ";";
+                    }
+                    broadcastMessage("ENABLEBUTTONS;"+asdf);
                 }
             } else if (e.getActionCommand().equals("done")) {
                 // e.getSource() --> sender vom done
