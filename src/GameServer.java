@@ -20,12 +20,12 @@ public class GameServer {
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("READY!")) {
                 ++readyCnt;
-                System.out.println("con");
 
                 if (readyCnt >= clients.size()) {
-                    //StartTimer();
-                    System.out.println("Start");
-
+                    // StartTimer();
+                    // warte eine zufällige zeit
+                    // erzeuge zufällige werte
+                    broadcastMessage("ENABLEBUTTONS;1;5;8;16");
                 }
             } else if (e.getActionCommand().equals("done")) {
                 // e.getSource() --> sender vom done
@@ -35,6 +35,12 @@ public class GameServer {
             }
         }
     };
+
+    private void broadcastMessage(String msg) {
+        for(GameConnection c : clients) {
+            c.send(msg);
+        }
+    }
 
     public void start() {
         this.running = true;

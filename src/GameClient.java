@@ -6,14 +6,14 @@ import java.util.ArrayList;
 public class GameClient {
 
     private ArrayList<ActionListener> listeners = new ArrayList<>();
+    private GameConnection player;
 
     public GameClient(String host, int port) {
         try {
             Socket client = new Socket(host, port);
 
-            GameConnection player = new GameConnection(client);
+            player = new GameConnection(client);
             player.start();
-            player.send("3");
 
             for (ActionListener l : listeners) {
                 player.addActionListener(l);
@@ -24,6 +24,10 @@ public class GameClient {
 
     public void addActionListener(ActionListener l) {
         listeners.add(l);
+    }
+
+    public void sendMessage(String msg) {
+        player.send(msg);
     }
 
 }
