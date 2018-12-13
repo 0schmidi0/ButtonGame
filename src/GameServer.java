@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.ServerSocket;
@@ -12,6 +13,12 @@ public class GameServer {
     private Random rn = new Random();
 
     private int readyCnt = 0;
+
+    private int random_button_anzahl;
+    private JButton[] game_buttons = new JButton[16];
+    private int random_16;
+    private Random rn = new Random();
+
     private ArrayList <GameConnection> clients = new ArrayList<>();
 
     public GameServer(int port) {
@@ -26,9 +33,10 @@ public class GameServer {
                 System.out.println("con");
 
                 if (readyCnt >= clients.size()) {
-                    StartTimer();
-                    System.out.println("Start");
-
+                    // StartTimer();
+                    // warte eine zufällige zeit
+                    // erzeuge zufällige werte
+                    broadcastMessage("ENABLEBUTTONS;1;5;8;16");
                 }
             } else if (e.getActionCommand().equals("done")) {
                 // e.getSource() --> sender vom done
@@ -39,8 +47,11 @@ public class GameServer {
         }
     };
 
-
-
+    private void broadcastMessage(String msg) {
+        for(GameConnection c : clients) {
+            c.send(msg);
+        }
+    }
 
 
     private void StartTimer() {

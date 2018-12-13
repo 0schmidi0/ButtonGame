@@ -26,8 +26,26 @@ public class GUI extends JFrame implements ActionListener {
     private String  time;
     private JLabel GUI_time;
 
+    private ActionListener receiver = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            if (actionEvent.getActionCommand().startsWith("ENABLEBUTTONS")) {
+
+            }
+        }
+    };
+
+    private GameClient client;
+
     public GUI(String title) {
         super(title);
+
+        // erzeuge neuen gameclient für kommunikaiton mit server
+        client = new GameClient("localhost", 5555);
+        client.addActionListener(receiver);
+
+
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.getContentPane().setLayout(new BorderLayout());
