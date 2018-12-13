@@ -9,7 +9,7 @@ public class GUI extends JFrame implements ActionListener {
     private static int TIMER_OFFSET = 3000;
 
     private JButton[] game_buttons = new JButton[16];
-    private JButton ready_button = new JButton("READY!");
+    private JButton ready_button = new JButton("ready");
 
     private JTextArea time_area = new JTextArea("Time: ");
     private JTextArea win_area = new JTextArea("?");
@@ -64,7 +64,6 @@ public class GUI extends JFrame implements ActionListener {
 
         ready_button.addActionListener(this);
 
-        GameClient c = new GameClient("localhost", 5555);
         // c.addActionListener(new ActionListener() {
         //   @Override
         // public void actionPerformed(ActionEvent e) {
@@ -77,7 +76,7 @@ public class GUI extends JFrame implements ActionListener {
 
         ButtonInit();
         ButtonDisable();
-        TimerRun();
+       // TimerRun();
     }
 
     private void ButtonInit() {
@@ -98,7 +97,7 @@ public class GUI extends JFrame implements ActionListener {
 
                 try {
                     Thread.sleep(random_time + TIMER_OFFSET);
-                    RandomButtonEnable();
+                    //RandomButtonEnable();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -107,7 +106,7 @@ public class GUI extends JFrame implements ActionListener {
         }.start();
 
     }
-
+/*
     private void RandomButtonEnable() {
         this.random_button_count = rn.nextInt(4) + 1;
         for (int i = 0; i < random_button_count; i++) {
@@ -120,7 +119,7 @@ public class GUI extends JFrame implements ActionListener {
             }
         }
     }
-
+*/
     private void ButtonDisable() {
         for (int i = 0; i < 16; i++) {
             game_buttons[i].setEnabled(false);
@@ -135,8 +134,8 @@ public class GUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("READY!")) {
-
+        if (e.getActionCommand().equals("ready")) {
+            client.sendMessage("!");
         } else {
             int buttonNR = Integer.parseInt(e.getActionCommand());
             game_buttons[buttonNR - 1].setEnabled(false);
