@@ -41,7 +41,7 @@ public class GUI extends JFrame implements ActionListener {
         super(title);
 
         // erzeuge neuen gameclient für kommunikaiton mit server
-        client = new GameClient("localhost", 4321);
+        client = new GameClient("localhost", 5555);
         client.addActionListener(receiver);
 
 
@@ -92,7 +92,7 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
-    public void StartTimer() {
+    /*public void StartTimer() {
         new Thread() {
             @Override
             public void run() {
@@ -108,7 +108,7 @@ public class GUI extends JFrame implements ActionListener {
             }
         }.start();
 
-    }
+    }*/
 
     private void RandomButtonEnable() {
         this.random_button_count = rn.nextInt(4) + 1;
@@ -153,7 +153,7 @@ public class GUI extends JFrame implements ActionListener {
                 //System.out.println("Zeit bis alle buttons gedrückt wurden:"+time_diff);  // nur für teszwecke ausgegeben
                 time = String.valueOf(time_diff);
                 time_area.setText(time);
-                StartTimer();
+                //StartTimer();
             }
         }
     }
