@@ -70,7 +70,7 @@ public class GameServer {
     private void SetTimer() {
         int random_time = rn.nextInt(TIMER_OFFSET)+TIMER_OFFSET;
         System.out.println("Time: " + random_time);
-        broadcastMessage("?");
+        broadcastMessage("Time"+random_time);
     }
 
 

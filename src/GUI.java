@@ -23,15 +23,16 @@ public class GUI extends JFrame implements ActionListener {
     private long time_start;
     private long time_end;
     private long time_diff;
-    private String  time;
+    private String time;
     private JLabel GUI_time;
 
     private ActionListener receiver = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println("????");
-            if (actionEvent.getActionCommand().startsWith("?")) {
-                System.out.println("hello World");
+            if (actionEvent.getActionCommand().startsWith("Time")) {
+                String comand = actionEvent.getActionCommand().substring(4);
+                int time = Integer.parseInt(comand);
+                TimerWait(time);
             }
         }
     };
@@ -45,7 +46,6 @@ public class GUI extends JFrame implements ActionListener {
         client = new GameClient("localhost", 5555);
         client.addActionListener(receiver);
         client.startClient();
-
 
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,7 +68,7 @@ public class GUI extends JFrame implements ActionListener {
 
         ButtonInit();
         ButtonDisable();
-       // TimerRun();
+        // TimerRun();
     }
 
     private void ButtonInit() {
@@ -81,37 +81,38 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
-    public void TimerRun() {
+    public void TimerWait(int time) {
         new Thread() {
             @Override
             public void run() {
-                int random_time = rn.nextInt(TIMER_OFFSET);
 
                 try {
-                    Thread.sleep(random_time + TIMER_OFFSET);
+                    Thread.sleep(time);
                     //RandomButtonEnable();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 time_start = System.currentTimeMillis();
+                System.out.println("Times Over");
             }
         }.start();
 
     }
-/*
-    private void RandomButtonEnable() {
-        this.random_button_count = rn.nextInt(4) + 1;
-        for (int i = 0; i < random_button_count; i++) {
-            int random_button = rn.nextInt(16);
-            if (game_buttons[random_button].getBackground() == Color.GREEN) {
-                i--;
-            } else {
-                game_buttons[random_button].setEnabled(true);
-                game_buttons[random_button].setBackground(Color.GREEN);
+
+    /*
+        private void RandomButtonEnable() {
+            this.random_button_count = rn.nextInt(4) + 1;
+            for (int i = 0; i < random_button_count; i++) {
+                int random_button = rn.nextInt(16);
+                if (game_buttons[random_button].getBackground() == Color.GREEN) {
+                    i--;
+                } else {
+                    game_buttons[random_button].setEnabled(true);
+                    game_buttons[random_button].setBackground(Color.GREEN);
+                }
             }
         }
-    }
-*/
+    */
     private void ButtonDisable() {
         for (int i = 0; i < 16; i++) {
             game_buttons[i].setEnabled(false);
@@ -135,11 +136,11 @@ public class GUI extends JFrame implements ActionListener {
             this.random_button_count--;
             if ((this.random_button_count) == 0) {
                 time_end = System.currentTimeMillis();
-                time_diff = time_end-time_start;
+                time_diff = time_end - time_start;
                 //System.out.println("Zeit bis alle buttons gedrückt wurden:"+time_diff);  // nur für teszwecke ausgegeben
                 time = String.valueOf(time_diff);
                 time_area.setText(time);
-                TimerRun();
+               // TimerRun();
             }
         }
     }
