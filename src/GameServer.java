@@ -36,7 +36,7 @@ public class GameServer {
                     PlayButtons();
                     // warte eine zufällige zeit
                     // erzeuge zufällige werte
-                    String asdf = "";
+                    /*String asdf = "";
                     random_button_anzahl = (new Random().nextInt(3) + 1);
                     for (int i = 1; i <= random_button_anzahl; i++) {
                         random_16 = new Random().nextInt(15) + 1;
@@ -45,6 +45,7 @@ public class GameServer {
                         asdf = asdf + Integer.toString(random_16) + ";";
                     }
                     broadcastMessage("ENABLEBUTTONS;" + asdf);
+                */
                 }
             } else if (e.getActionCommand().equals("done")) {
                 // e.getSource() --> sender vom done
@@ -67,9 +68,9 @@ public class GameServer {
 
 
     private void SetTimer() {
-
-        int random_time = rn.nextInt(TIMER_OFFSET);
+        int random_time = rn.nextInt(TIMER_OFFSET)+TIMER_OFFSET;
         System.out.println("Time: " + random_time);
+        broadcastMessage("?");
     }
 
 

@@ -13,17 +13,20 @@ public class GameClient {
             Socket client = new Socket(host, port);
 
             player = new GameConnection(client);
-            player.start();
-
-            for (ActionListener l : listeners) {
-                player.addActionListener(l);
-            }
         } catch (IOException e) {
         }
     }
 
     public void addActionListener(ActionListener l) {
         listeners.add(l);
+    }
+
+    public void startClient() {
+        player.start();
+
+        for (ActionListener l : listeners) {
+            player.addActionListener(l);
+        }
     }
 
     public void sendMessage(String msg) {

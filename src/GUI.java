@@ -29,8 +29,9 @@ public class GUI extends JFrame implements ActionListener {
     private ActionListener receiver = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            if (actionEvent.getActionCommand().startsWith("ENABLEBUTTONS")) {
-
+            System.out.println("????");
+            if (actionEvent.getActionCommand().startsWith("?")) {
+                System.out.println("hello World");
             }
         }
     };
@@ -43,6 +44,7 @@ public class GUI extends JFrame implements ActionListener {
         // erzeuge neuen gameclient für kommunikaiton mit server
         client = new GameClient("localhost", 5555);
         client.addActionListener(receiver);
+        client.startClient();
 
 
 
@@ -63,16 +65,6 @@ public class GUI extends JFrame implements ActionListener {
         win_area.setEnabled(false);
 
         ready_button.addActionListener(this);
-
-        // c.addActionListener(new ActionListener() {
-        //   @Override
-        // public void actionPerformed(ActionEvent e) {
-        //   if (e.getActionCommand().equals("you win")) {
-        // im Textfeld "Gewinner" anzeigen
-        //win_area.setText("U WON");
-        // }
-        //}
-        //});
 
         ButtonInit();
         ButtonDisable();
