@@ -18,7 +18,7 @@ public class GameServer {
     private JButton[] game_buttons = new JButton[16];
     private int random_16;
     private int[] activate_buttons;
-    private ArrayList <GameConnection> clients = new ArrayList<>();
+    private ArrayList<GameConnection> clients = new ArrayList<>();
 
     public GameServer(int port) {
         this.port = port;
@@ -29,22 +29,22 @@ public class GameServer {
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("!")) {
                 ++readyCnt;
-              //  System.out.println("con");
+                //  System.out.println("con");
 
                 if (readyCnt >= clients.size()) {
-                    StartTimer();
+                    SetTimer();
                     PlayButtons();
                     // warte eine zufällige zeit
                     // erzeuge zufällige werte
                     String asdf = "";
                     random_button_anzahl = (new Random().nextInt(3) + 1);
-                    for(int i=1;i<=random_button_anzahl;i++){
+                    for (int i = 1; i <= random_button_anzahl; i++) {
                         random_16 = new Random().nextInt(15) + 1;
-                        activate_buttons[i]=random_16;
+                        activate_buttons[i] = random_16;
 
                         asdf = asdf + Integer.toString(random_16) + ";";
                     }
-                    broadcastMessage("ENABLEBUTTONS;"+asdf);
+                    broadcastMessage("ENABLEBUTTONS;" + asdf);
                 }
             } else if (e.getActionCommand().equals("done")) {
                 // e.getSource() --> sender vom done
@@ -60,31 +60,20 @@ public class GameServer {
     }
 
     private void broadcastMessage(String msg) {
-        for(GameConnection c : clients) {
+        for (GameConnection c : clients) {
             c.send(msg);
         }
     }
 
 
-    private void StartTimer() {
-        new Thread() {
-            @Override
-            public void run() {
-                int random_time = rn.nextInt(TIMER_OFFSET);
+    private void SetTimer() {
 
-                try {
-                    Thread.sleep(random_time + TIMER_OFFSET);
-                    //RandomButtonEnable();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //time_start = System.currentTimeMillis();
-                System.out.println("Time: "+random_time);
-            }
-        }.start();
-
+        int random_time = rn.nextInt(TIMER_OFFSET);
+        System.out.println("Time: " + random_time);
     }
-        public void start() {
+
+
+    public void start() {
         this.running = true;
 
         Thread serverThread = new Thread() {
