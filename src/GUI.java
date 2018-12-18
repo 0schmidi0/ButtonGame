@@ -24,7 +24,6 @@ public class GUI extends JFrame implements ActionListener {
     private long time_end;
     private long time_diff;
     private String time;
-    private JLabel GUI_time;
 
     private ActionListener receiver = new ActionListener() {
         @Override
@@ -33,6 +32,9 @@ public class GUI extends JFrame implements ActionListener {
                 String comand = actionEvent.getActionCommand().substring(4);
                 int time = Integer.parseInt(comand);
                 TimerWait(time);
+            }else if (actionEvent.getActionCommand().startsWith("Buttons")) {
+                String comand = actionEvent.getActionCommand().substring(8);
+                System.out.println(comand);
             }
         }
     };
@@ -99,20 +101,6 @@ public class GUI extends JFrame implements ActionListener {
 
     }
 
-    /*
-        private void RandomButtonEnable() {
-            this.random_button_count = rn.nextInt(4) + 1;
-            for (int i = 0; i < random_button_count; i++) {
-                int random_button = rn.nextInt(16);
-                if (game_buttons[random_button].getBackground() == Color.GREEN) {
-                    i--;
-                } else {
-                    game_buttons[random_button].setEnabled(true);
-                    game_buttons[random_button].setBackground(Color.GREEN);
-                }
-            }
-        }
-    */
     private void ButtonDisable() {
         for (int i = 0; i < 16; i++) {
             game_buttons[i].setEnabled(false);

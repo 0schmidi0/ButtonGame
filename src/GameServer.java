@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.ServerSocket;
@@ -14,10 +15,6 @@ public class GameServer {
 
     private int readyCnt = 0;
 
-    private int random_button_anzahl;
-    private JButton[] game_buttons = new JButton[16];
-    private int random_16;
-    private int[] activate_buttons;
     private ArrayList<GameConnection> clients = new ArrayList<>();
 
     public GameServer(int port) {
@@ -34,18 +31,6 @@ public class GameServer {
                 if (readyCnt >= clients.size()) {
                     SetTimer();
                     PlayButtons();
-                    // warte eine zufällige zeit
-                    // erzeuge zufällige werte
-                    /*String asdf = "";
-                    random_button_anzahl = (new Random().nextInt(3) + 1);
-                    for (int i = 1; i <= random_button_anzahl; i++) {
-                        random_16 = new Random().nextInt(15) + 1;
-                        activate_buttons[i] = random_16;
-
-                        asdf = asdf + Integer.toString(random_16) + ";";
-                    }
-                    broadcastMessage("ENABLEBUTTONS;" + asdf);
-                */
                 }
             } else if (e.getActionCommand().equals("done")) {
                 // e.getSource() --> sender vom done
@@ -57,7 +42,32 @@ public class GameServer {
     };
 
     private void PlayButtons() {
+        int random_button_count = rn.nextInt(4) + 1;
+        int[] activeButtons = new int[random_button_count];
 
+        int i = 0;
+        String mass = "Buttons:";
+
+        while (i < random_button_count) {
+            int random_button = rn.nextInt(16);
+
+            if (!containsValue(activeButtons, random_button)) {
+                activeButtons[i] = random_button;
+                mass = mass + random_button + ";";
+                ++i;
+            }
+        }
+        broadcastMessage(mass);
+    }
+
+    private boolean containsValue(int[] arr, int value) {
+        for (int i = 0; i < arr.length; ++i) {
+            if (arr[i] == value) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void broadcastMessage(String msg) {
@@ -68,9 +78,9 @@ public class GameServer {
 
 
     private void SetTimer() {
-        int random_time = rn.nextInt(TIMER_OFFSET)+TIMER_OFFSET;
+        int random_time = rn.nextInt(TIMER_OFFSET) + TIMER_OFFSET;
         System.out.println("Time: " + random_time);
-        broadcastMessage("Time"+random_time);
+        broadcastMessage("Time" + random_time);
     }
 
 
