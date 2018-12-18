@@ -9,7 +9,7 @@ public class GUI extends JFrame implements ActionListener {
     private static int TIMER_OFFSET = 3000;
 
     private JButton[] game_buttons = new JButton[16];
-    private JButton ready_button = new JButton("ready");
+    public JButton ready_button = new JButton("ready");
 
     private JTextArea time_area = new JTextArea("Time: ");
     private JTextArea win_area = new JTextArea("?");
@@ -24,6 +24,9 @@ public class GUI extends JFrame implements ActionListener {
     private long time_end;
     private long time_diff;
     private String time;
+
+    private JMenuBar MenuBar = new JMenuBar();
+    private JMenuItem settings = new JMenuItem("settings");
 
     private ActionListener receiver = new ActionListener() {
         @Override
@@ -44,11 +47,10 @@ public class GUI extends JFrame implements ActionListener {
     public GUI(String title) {
         super(title);
 
-        // erzeuge neuen gameclient für kommunikaiton mit server
+        // Erzeuge eines neuen gameclients für die kommunikation mit dem Server
         client = new GameClient("localhost", 5555);
         client.addActionListener(receiver);
         client.startClient();
-
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -57,9 +59,13 @@ public class GUI extends JFrame implements ActionListener {
 
         this.getContentPane().add(button_panel, BorderLayout.CENTER);
         this.getContentPane().add(south_panel, BorderLayout.SOUTH);
+        this.getContentPane().add(MenuBar,BorderLayout.NORTH);
+
+        MenuBar.add(settings);
 
         button_panel.setLayout(new GridLayout(4, 4));
         south_panel.setLayout(new FlowLayout());
+
         south_panel.add(win_area);
         south_panel.add(ready_button);
         south_panel.add(time_area);
@@ -79,7 +85,7 @@ public class GUI extends JFrame implements ActionListener {
             game_buttons[i].addActionListener(this);
             button_panel.add(game_buttons[i]);
             this.pack();
-            this.setSize(340, 350);
+            this.setSize(650, 650);
         }
     }
 
@@ -87,7 +93,6 @@ public class GUI extends JFrame implements ActionListener {
         new Thread() {
             @Override
             public void run() {
-
                 try {
                     Thread.sleep(time);
                     //RandomButtonEnable();
@@ -108,7 +113,6 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
-
     public static void main(String[] args) {
         GUI obj = new GUI("ButtonGame");
     }
@@ -125,10 +129,9 @@ public class GUI extends JFrame implements ActionListener {
             if ((this.random_button_count) == 0) {
                 time_end = System.currentTimeMillis();
                 time_diff = time_end - time_start;
-                //System.out.println("Zeit bis alle buttons gedrückt wurden:"+time_diff);  // nur für teszwecke ausgegeben
                 time = String.valueOf(time_diff);
                 time_area.setText(time);
-               // TimerRun();
+                // TimerRun();
             }
         }
     }

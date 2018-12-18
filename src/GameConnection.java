@@ -22,14 +22,12 @@ public class GameConnection {
     public void start() {
         this.running = true;
 
-
         try {
             this.receive = new DataInputStream(this.connection.getInputStream());
             this.send = new DataOutputStream(this.connection.getOutputStream());
         } catch (Exception e) {
 
         }
-
 
         Thread t = new Thread() {
             @Override
