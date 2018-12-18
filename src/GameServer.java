@@ -46,7 +46,7 @@ public class GameServer {
         int[] activeButtons = new int[random_button_count];
 
         int i = 0;
-        String mass = "Buttons:";
+        String mass = "Buttons"+random_button_count+";";
 
         while (i < random_button_count) {
             int random_button = rn.nextInt(16);

@@ -32,9 +32,15 @@ public class GUI extends JFrame implements ActionListener {
                 String comand = actionEvent.getActionCommand().substring(4);
                 int time = Integer.parseInt(comand);
                 TimerWait(time);
-            }else if (actionEvent.getActionCommand().startsWith("Buttons")) {
-                String comand = actionEvent.getActionCommand().substring(8);
-                System.out.println(comand);
+            } else if (actionEvent.getActionCommand().startsWith("Buttons")) {
+                String comand = actionEvent.getActionCommand().substring(7);
+                String[] split = comand.split(";");
+                int buttons = Integer.parseInt(split[0]);
+                int i = 0;
+                while (i<buttons){
+                   // System.out.println(split[i+1]); Umrechnung in int
+                    i++;
+                }
             }
         }
     };
@@ -128,7 +134,7 @@ public class GUI extends JFrame implements ActionListener {
                 //System.out.println("Zeit bis alle buttons gedrückt wurden:"+time_diff);  // nur für teszwecke ausgegeben
                 time = String.valueOf(time_diff);
                 time_area.setText(time);
-               // TimerRun();
+                // TimerRun();
             }
         }
     }
