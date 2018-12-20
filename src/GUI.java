@@ -49,8 +49,8 @@ public class GUI extends JFrame implements ActionListener {
                 String comand = actionEvent.getActionCommand().substring(8);
                 int player = Integer.parseInt(comand);
                 east_panel.setLayout(new GridLayout(3, 1));
-                for (int i = 0; i < player; i++) {
-                    player_name.setText("Players: " + (i+1));
+                for (int i = 1; i <= player; i++) {
+                    player_name.setText("Players: " + (i));
                     player_name.setEditable(false);
                     east_panel.add(player_name);
                     east_panel.add(points_text);
