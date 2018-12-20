@@ -45,6 +45,10 @@ public class GameServer {
                         con.send("LOOSE");
                     }
                 }
+            }else if (e.getActionCommand().startsWith("TextMess")){
+                String message = e.getActionCommand().substring(12);
+                broadcastMessage(message);
+
             }
         }
     };

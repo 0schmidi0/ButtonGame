@@ -71,6 +71,8 @@ public class GUI extends JFrame implements ActionListener {
             } else if (actionEvent.getActionCommand().startsWith("Winners")) {
                 time = actionEvent.getActionCommand().substring(12);
                 time_area.setText(time);
+            } else {
+                chat_area.setText(chat_area.getText() + "\n\r" + actionEvent.getActionCommand());
             }
         }
     };
@@ -101,6 +103,8 @@ public class GUI extends JFrame implements ActionListener {
         this.setVisible(true);
 
         west_south_pane.setLayout(new FlowLayout());
+
+        chat_text.setPreferredSize(new Dimension(100,20));
 
         west_panel.setLayout(new BorderLayout());
         west_panel.add(chat_area, BorderLayout.CENTER);
@@ -149,7 +153,7 @@ public class GUI extends JFrame implements ActionListener {
             game_buttons[i].addActionListener(this);
             button_panel.add(game_buttons[i]);
             this.pack();
-            this.setSize(440, 350);
+            this.setSize(500, 350);
         }
     }
 
@@ -187,8 +191,8 @@ public class GUI extends JFrame implements ActionListener {
         if (e.getActionCommand().equals("ready")) {
             client.sendMessage("!");
         } else if (e.getActionCommand().equals("SEND")) {
-            System.out.println(chat_text.getText());
-
+            client.sendMessage("TextMessage:" + chat_text.getText());
+            chat_text.setText("");
         } else {
             int buttonNR = Integer.parseInt(e.getActionCommand());
             System.out.println(e.getActionCommand());
