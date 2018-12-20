@@ -15,11 +15,13 @@ public class GUI extends JFrame implements ActionListener {
     public JButton ready_button = new JButton("ready");
 
     private JTextArea time_area = new JTextArea("Time: ");
-    private JTextArea points_text = new JTextArea("Points: " + points );
+    private JTextArea points_text = new JTextArea("Points: " + points);
 
     private JPanel button_panel = new JPanel();
     private JPanel south_panel = new JPanel();
     private JPanel east_panel = new JPanel();
+    private JPanel west_panel = new JPanel();
+    private JPanel west_south_pane = new JPanel();
 
     private long time_start;
     private long time_end;
@@ -27,6 +29,9 @@ public class GUI extends JFrame implements ActionListener {
     private String time;
     private String[] split;
     private JTextArea player_name = new JTextArea();
+    private JTextArea chat_area = new JTextArea();
+    private JTextField chat_text = new JTextField("Massage");
+    private JButton chat_send = new JButton("SEND");
 
     private JMenuBar MenuBar = new JMenuBar();
     private JMenuItem settings = new JMenuItem("settings");
@@ -92,10 +97,21 @@ public class GUI extends JFrame implements ActionListener {
         this.getContentPane().setLayout(new BorderLayout());
         this.setVisible(true);
 
+        west_south_pane.setLayout(new FlowLayout());
+
+        west_panel.setLayout(new BorderLayout());
+        west_panel.add(chat_area, BorderLayout.CENTER);
+        west_panel.add(west_south_pane, BorderLayout.SOUTH);
+
+        chat_send.addActionListener(this);
+        west_south_pane.add(chat_text);
+        west_south_pane.add(chat_send);
+
         this.getContentPane().add(button_panel, BorderLayout.CENTER);
         this.getContentPane().add(south_panel, BorderLayout.SOUTH);
         this.getContentPane().add(MenuBar, BorderLayout.NORTH);
         this.getContentPane().add(east_panel, BorderLayout.EAST);
+        this.getContentPane().add(west_panel, BorderLayout.WEST);
 
         MenuBar.add(settings);
 
@@ -155,8 +171,12 @@ public class GUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("ready")) {
             client.sendMessage("!");
+        } else if (e.getActionCommand().equals("SEND")) {
+            System.out.println(chat_text.getText());
+
         } else {
             int buttonNR = Integer.parseInt(e.getActionCommand());
+            System.out.println(e.getActionCommand());
             game_buttons[buttonNR - 1].setEnabled(false);
             game_buttons[buttonNR - 1].setBackground(getBackground());
             this.button_count--;
