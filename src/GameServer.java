@@ -108,13 +108,14 @@ public class GameServer {
                         Socket client = server.accept();
                         GameConnection player = new GameConnection(client);
 
+
                         player.addActionListener(broadcastListener);
                         clients.add(player);
                         player.start();
                         broadcastMessage("Spieler:" + clients.size());
                     }
                 } catch (Exception e) {
-
+                    System.out.println("Can't start Server");
                 }
             }
         };
@@ -126,6 +127,6 @@ public class GameServer {
     }
 
     public static void main(String[] args) {
-        new GameServer(5555).start();
+        new GameServer(4555).start();
     }
 }
