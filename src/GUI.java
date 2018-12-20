@@ -1,29 +1,32 @@
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
 
 public class GUI extends JFrame implements ActionListener {
-    private static int TIMER_OFFSET = 3000;
+
+    private int button_count;
+    private int points = 0;
 
     private JButton[] game_buttons = new JButton[16];
     public JButton ready_button = new JButton("ready");
 
     private JTextArea time_area = new JTextArea("Time: ");
-    private JTextArea win_area = new JTextArea("?");
+    private JTextArea points_text = new JTextArea("Points: " + points );
 
     private JPanel button_panel = new JPanel();
     private JPanel south_panel = new JPanel();
-
-    private Random rn = new Random();
-    private int random_button_count;
+    private JPanel east_panel = new JPanel();
 
     private long time_start;
     private long time_end;
     private long time_diff;
     private String time;
+    private String[] split;
+    private JTextArea player_name = new JTextArea();
 
     private JMenuBar MenuBar = new JMenuBar();
     private JMenuItem settings = new JMenuItem("settings");
@@ -37,23 +40,49 @@ public class GUI extends JFrame implements ActionListener {
                 TimerWait(time);
             } else if (actionEvent.getActionCommand().startsWith("Buttons")) {
                 String comand = actionEvent.getActionCommand().substring(7);
-                String[] split = comand.split(";");
-                int buttons = Integer.parseInt(split[0]);
-                int i = 0;
-                while (i<buttons){
-                   // System.out.println(split[i+1]); Umrechnung in int
-                    i++;
+                split = comand.split(";");
+            } else if (actionEvent.getActionCommand().startsWith("WON")) {
+                points++;
+                points_text.setText("Points: " + points);
+                ready_button.setEnabled(true);
+            } else if (actionEvent.getActionCommand().startsWith("Spieler")) {
+                String comand = actionEvent.getActionCommand().substring(8);
+                int player = Integer.parseInt(comand);
+                east_panel.setLayout(new GridLayout(3, 1));
+                for (int i = 0; i < player; i++) {
+                    player_name.setText("Players: " + (i+1));
+                    player_name.setEditable(false);
+                    east_panel.add(player_name);
+                    east_panel.add(points_text);
+                    east_panel.add(time_area);
                 }
+            } else if (actionEvent.getActionCommand().startsWith("LOOSE")) {
+                ButtonDisable();
+                ready_button.setEnabled(true);
+
+            } else if (actionEvent.getActionCommand().startsWith("Winners")) {
+                time = actionEvent.getActionCommand().substring(12);
+                time_area.setText(time);
             }
         }
     };
+
+    private void PlayButtonStart() {
+        button_count = Integer.parseInt(split[0]);
+        int i = 0;
+        while (i < button_count) {
+            int buttonUsed = Integer.parseInt(split[i + 1]);
+            game_buttons[buttonUsed].setEnabled(true);
+            game_buttons[buttonUsed].setBackground(Color.GREEN);
+            i++;
+        }
+    }
 
     private GameClient client;
 
     public GUI(String title) {
         super(title);
 
-        // Erzeuge eines neuen gameclients für die kommunikation mit dem Server
         client = new GameClient("localhost", 5555);
         client.addActionListener(receiver);
         client.startClient();
@@ -65,24 +94,22 @@ public class GUI extends JFrame implements ActionListener {
 
         this.getContentPane().add(button_panel, BorderLayout.CENTER);
         this.getContentPane().add(south_panel, BorderLayout.SOUTH);
-        this.getContentPane().add(MenuBar,BorderLayout.NORTH);
+        this.getContentPane().add(MenuBar, BorderLayout.NORTH);
+        this.getContentPane().add(east_panel, BorderLayout.EAST);
 
         MenuBar.add(settings);
 
         button_panel.setLayout(new GridLayout(4, 4));
         south_panel.setLayout(new FlowLayout());
 
-        south_panel.add(win_area);
         south_panel.add(ready_button);
-        south_panel.add(time_area);
         time_area.setEditable(false);
-        win_area.setEnabled(false);
+        points_text.setEditable(false);
 
         ready_button.addActionListener(this);
 
         ButtonInit();
         ButtonDisable();
-        // TimerRun();
     }
 
     private void ButtonInit() {
@@ -91,11 +118,12 @@ public class GUI extends JFrame implements ActionListener {
             game_buttons[i].addActionListener(this);
             button_panel.add(game_buttons[i]);
             this.pack();
-            this.setSize(650, 650);
+            this.setSize(440, 350);
         }
     }
 
     public void TimerWait(int time) {
+        ready_button.setEnabled(false);
         new Thread() {
             @Override
             public void run() {
@@ -106,7 +134,7 @@ public class GUI extends JFrame implements ActionListener {
                     e.printStackTrace();
                 }
                 time_start = System.currentTimeMillis();
-                System.out.println("Times Over");
+                PlayButtonStart();
             }
         }.start();
 
@@ -131,13 +159,13 @@ public class GUI extends JFrame implements ActionListener {
             int buttonNR = Integer.parseInt(e.getActionCommand());
             game_buttons[buttonNR - 1].setEnabled(false);
             game_buttons[buttonNR - 1].setBackground(getBackground());
-            this.random_button_count--;
-            if ((this.random_button_count) == 0) {
+            this.button_count--;
+            if ((this.button_count) == 0) {
                 time_end = System.currentTimeMillis();
                 time_diff = time_end - time_start;
                 time = String.valueOf(time_diff);
                 time_area.setText(time);
-                // TimerRun();
+                client.sendMessage("Done" + time);
             }
         }
     }

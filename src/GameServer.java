@@ -22,21 +22,29 @@ public class GameServer {
     }
 
     private ActionListener broadcastListener = new ActionListener() {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals("!")) {
                 ++readyCnt;
-                //  System.out.println("con");
+
 
                 if (readyCnt >= clients.size()) {
                     SetTimer();
                     PlayButtons();
+                    readyCnt = 0;
                 }
-            } else if (e.getActionCommand().equals("done")) {
-                // e.getSource() --> sender vom done
-                // sende an alle außer dem sender "you lose"
-
-                // sende an den sender "you win"
+            } else if (e.getActionCommand().startsWith("Done")) {
+                String time = e.getActionCommand().substring(4);
+                GameConnection c = (GameConnection) e.getSource();
+                System.out.println(c);
+                c.send("WON");
+                broadcastMessage("Winnerstime:" + time);
+                for (GameConnection con : clients) {
+                    if (con != c) {
+                        con.send("LOOSE");
+                    }
+                }
             }
         }
     };
@@ -46,7 +54,7 @@ public class GameServer {
         int[] activeButtons = new int[random_button_count];
 
         int i = 0;
-        String mass = "Buttons"+random_button_count+";";
+        String mass = "Buttons" + random_button_count + ";";
 
         while (i < random_button_count) {
             int random_button = rn.nextInt(16);
@@ -94,12 +102,12 @@ public class GameServer {
                 try (ServerSocket server = new ServerSocket(GameServer.this.port)) {
                     while (running) {
                         Socket client = server.accept();
-                        System.out.println("CON");
                         GameConnection player = new GameConnection(client);
 
                         player.addActionListener(broadcastListener);
                         clients.add(player);
                         player.start();
+                        broadcastMessage("Spieler:" + clients.size());
                     }
                 } catch (Exception e) {
 
