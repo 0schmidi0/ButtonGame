@@ -38,7 +38,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
     private JButton chat_send = new JButton("SEND");
 
     private JMenuBar MenuBar = new JMenuBar();
+    private JMenu Menu = new JMenu("Settings");
     private JMenuItem settings = new JMenuItem("settings");
+    private JMenuItem info = new JMenuItem("Info");
+    private JMenuItem serversettings = new JMenuItem("Server");
 
     public GUI(String title) {
         super(title);
@@ -73,7 +76,19 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
         this.getContentPane().add(east_panel, BorderLayout.EAST);
         this.getContentPane().add(west_panel, BorderLayout.WEST);
 
-        MenuBar.add(settings);
+        MenuBar.add(Menu);
+        MenuBar.add(Box.createHorizontalGlue());
+        //MenuBar.add(info);
+        Menu.add(settings);
+        Menu.add(serversettings);
+        settings.setEnabled(true);
+        //settings.add(serversettings);
+        settings.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                settings.setText("actionevent happend");
+            }
+        });
 
         button_panel.setLayout(new GridLayout(4, 4));
         south_panel.setLayout(new FlowLayout());
