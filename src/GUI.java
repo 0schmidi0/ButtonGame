@@ -37,16 +37,31 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
     private JTextField chat_text = new JTextField("Massage");
     private JButton chat_send = new JButton("SEND");
 
+    private JColorChooser CC = new JColorChooser();
+    private Color bgc = Color.GREEN;
+
     private JMenuBar MenuBar = new JMenuBar();
     private JMenu Menu = new JMenu("Settings");
-    private JMenuItem settings = new JMenuItem("settings");
+    private JMenuItem buttonSettings = new JMenuItem("ButtonSettings");
     private JMenuItem info = new JMenuItem("Info");
     private JMenuItem serversettings = new JMenuItem("Server");
+    private JMenu buttonColor   = new JMenu("Color");
+    private JMenu submenu1 = new JMenu("ButtonSettings");
+    private JMenu gamemode = new JMenu("Gamemode");
+
+    private JMenuItem colorGreen = new JMenuItem("Green");
+    private JMenuItem colorBlue = new JMenuItem("Blue");
+    private JMenuItem colorRed = new JMenuItem("Red");
+    private JMenuItem colorYellow = new JMenuItem("Yellow");
+
+
+    private JMenuItem nonstopmode = new JMenuItem("Speed Mode");
+    private JMenuItem beginnermode = new JMenuItem("Beginner Mode");
 
     public GUI(String title) {
         super(title);
 
-        client = new GameClient("localhost", 4555);
+        client = new GameClient("localhost", 5555);
         client.addActionListener(receiver);
         client.startClient();
 
@@ -78,15 +93,53 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 
         MenuBar.add(Menu);
         MenuBar.add(Box.createHorizontalGlue());
-        //MenuBar.add(info);
-        Menu.add(settings);
+        MenuBar.add(info);
+        Menu.add(submenu1);
         Menu.add(serversettings);
-        settings.setEnabled(true);
-        //settings.add(serversettings);
-        settings.addActionListener(new ActionListener() {
+        Menu.add(gamemode);
+        //buttonSettings.add(submenu1);
+
+        submenu1.add(buttonColor);
+
+        buttonColor.add(colorGreen);
+        buttonColor.add(colorBlue);
+        buttonColor.add(colorRed);
+        buttonColor.add(colorYellow);
+
+        gamemode.add(nonstopmode);
+        gamemode.add(beginnermode);
+
+        colorBlue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                settings.setText("actionevent happend");
+                bgc=Color.BLUE;
+            }
+        });
+
+        colorRed.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                bgc=Color.RED;
+            }
+        });
+        colorGreen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                bgc=Color.GREEN;
+            }
+        });
+        colorYellow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                bgc=Color.yellow;
+            }
+        });
+
+
+        buttonSettings.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                //buttonSettings.add(Menu);
             }
         });
 
